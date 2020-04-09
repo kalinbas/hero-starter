@@ -52,7 +52,7 @@ var enemyMoveFunction = function (gameData, helpers) {
     // var choices = ['North', 'South', 'East', 'West'];
 
     // return choices[Math.floor(Math.random()*4)];
-    return helpers.findNearestHealthWell (gameData);
+    return false //helpers.findNearestHealthWell (gameData);
 };
 
 var currentTurn = 0;
@@ -70,14 +70,14 @@ function gameSetup () {
     game.addHealthWell(2,2);
 
     // Add diamond mines on either side of the health well
-    game.addDiamondMine(2,1);
+    //game.addDiamondMine(2,1);
     game.addDiamondMine(2,3);
 
     // Add your hero in the top left corner of the map (team 0)
     game.addHero(0, 0, 'MyHero', 0);
 
     // Add an enemy hero in the bottom right corner of the map (team 1)
-    game.addHero(4, 4, 'Enemy', 1);
+    game.addHero(0, 1, 'Enemy', 1);
 
     if (cliOptions.wait){ // wait mode
         clearScreen();

@@ -172,6 +172,33 @@ var moves = {
         }
     },
 
+    advancedAvoidingMotherFucker: function (gameData, helpers) {
+        var myHero = gameData.activeHero;
+
+        var direction = false
+
+        // low health need to heal
+        if (myHero.health < 60) {
+            direction = helpers.findNearestHealthWell(gameData, { depth : 2, full : true})
+            if (!direction) {
+                direction = helpers.findNearestHealthWell(gameData, { depth : 2, full : false})
+            }
+            if (!direction) {
+                direction = helpers.findNearestHealthWell(gameData)
+            }
+        } else {
+            direction = helpers.findNearestNonTeamDiamondMine(gameData, { depth : 2, full : true})
+            if (!direction) {
+                direction = helpers.findNearestTeamMember(gameData, { depth : 2, full : true})
+            }
+            direction = helpers.findNearestTeamMember(gameData, { depth : 2, full : false})
+            direction = helpers.findNearestTeamMember(gameData)
+        }
+        
+
+        return direction
+    },
+
     // The "Coward"
     // This hero will try really hard not to die.
     coward: function (gameData, helpers) {
@@ -180,7 +207,7 @@ var moves = {
 };
 
 // Set our hero's strategy
-var move =  moves.safeDiamondMiner;
+var move =  moves.advancedAvoidingMotherFucker;
 
 // Export the move function here
 module.exports = move;
