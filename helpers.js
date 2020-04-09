@@ -90,13 +90,13 @@ helpers.findNearestObjectDirectionAndDistance = function (board, fromTile, tileC
                         var directionCheck = directions[j];
                         var directionCheckTile = helpers.getTileNearby(board, nextTile.distanceFromTop, nextTile.distanceFromLeft, directionCheck);
                         //console.log(directionCheckTile.distanceFromTop, directionCheckTile.distanceFromLeft)
-                        if (directionCheckTile && directionCheckTile.type === 'Hero' && directionCheckTile.team !== fromTile.team) {
+                        if (directionCheckTile && directionCheckTile.type === 'Hero' && directionCheckTile.team !== fromTile.team && !tileCallback(directionCheckTile)) {
                             isTileAllowed = false
                         } else if (directionCheckTile && enemyAvoidConfig.full) {
                             for (var k = 0; k < directions.length; k++) {
                                 var directionCheck2 = directions[k];
                                 var directionCheckTile2 = helpers.getTileNearby(board, directionCheckTile.distanceFromTop, directionCheckTile.distanceFromLeft, directionCheck2);
-                                if (directionCheckTile2 && directionCheckTile2.type === 'Hero' && directionCheckTile2.team !== fromTile.team) {
+                                if (directionCheckTile2 && directionCheckTile2.type === 'Hero' && directionCheckTile2.team !== fromTile.team && !tileCallback(directionCheckTile2)) {
                                     isTileAllowed = false
                                     break;
                                 }

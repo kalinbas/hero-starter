@@ -49,9 +49,8 @@ var heroMoveFunction = require('./hero.js');
 var enemyMoveFunction = function (gameData, helpers) {
   // Move in a random direction
 
-    // var choices = ['North', 'South', 'East', 'West'];
-
-    // return choices[Math.floor(Math.random()*4)];
+    var choices = ['North', 'South', 'East', 'West'];
+    return choices[Math.floor(Math.random()*4)];
     return false //helpers.findNearestHealthWell (gameData);
 };
 
@@ -77,7 +76,7 @@ function gameSetup () {
     game.addHero(0, 0, 'MyHero', 0);
 
     // Add an enemy hero in the bottom right corner of the map (team 1)
-    game.addHero(0, 1, 'Enemy', 1);
+    game.addHero(4, 4, 'Enemy', 1);
 
     if (cliOptions.wait){ // wait mode
         clearScreen();

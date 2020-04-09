@@ -177,24 +177,38 @@ var moves = {
 
         var direction = false
 
-        // low health need to heal
-        if (myHero.health < 60) {
-            direction = helpers.findNearestHealthWell(gameData, { depth : 2, full : true})
-            if (!direction) {
-                direction = helpers.findNearestHealthWell(gameData, { depth : 2, full : false})
+        // if next to health well and not healed completely - always heal
+        var healthWellStats = helpers.findNearestObjectDirectionAndDistance(gameData.board, myHero, function (boardTile) {
+            if (boardTile.type === 'HealthWell') {
+                return true;
             }
-            if (!direction) {
-                direction = helpers.findNearestHealthWell(gameData)
+        })
+        if (healthWellStats && myHero.health < 100 && healthWellStats.distance === 1) {
+            return healthWellStats.direction
+        }
+
+        // if next to enemy which can be killed directly
+        var enemyStats = helpers.findNearestObjectDirectionAndDistance(gameData.board, myHero, function (boardTile) {
+            if (boardTile.type === 'Hero' && boardTile.health <= 30 && boardTile.team != myHero.team) {
+                return true;
             }
-        } else {
-            direction = helpers.findNearestNonTeamDiamondMine(gameData, { depth : 2, full : true})
-            if (!direction) {
-                direction = helpers.findNearestTeamMember(gameData, { depth : 2, full : true})
-            }
-            direction = helpers.findNearestTeamMember(gameData, { depth : 2, full : false})
-            direction = helpers.findNearestTeamMember(gameData)
+        })
+        if (enemyStats && myHero.health > 30 && enemyStats.distance === 1) {
+            return enemyStats.direction
         }
         
+        // low health try to heal
+        if (myHero.health < 60) {
+            direction = helpers.findNearestHealthWell(gameData, { depth : 2, full : true})
+            if (!direction) direction = helpers.findNearestHealthWell(gameData, { depth : 2, full : false})
+            if (!direction) direction = helpers.findNearestHealthWell(gameData)
+        } else {
+            direction = helpers.findNearestNonTeamDiamondMine(gameData, { depth : 2, full : true})
+            if (!direction) direction = helpers.findNearestWeakerEnemy(gameData, { depth : 2, full : true})
+            if (!direction) direction = helpers.findNearestTeamMember(gameData, { depth : 2, full : true})
+            if (!direction) direction = helpers.findNearestNonTeamDiamondMine(gameData, { depth : 2, full : false})
+            if (!direction) direction = helpers.findNearestTeamMember(gameData, { depth : 2, full : false})
+        }
 
         return direction
     },
